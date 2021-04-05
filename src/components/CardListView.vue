@@ -2,10 +2,10 @@
 	<v-container>
 		<v-row align="center" justify="space-around">
 			<v-col>
-				Current tries: {{ currentScore || 10 }}
+				Current tries: {{ currentTries}}
 			</v-col>
 			<v-col class="text-center">
-				Best: {{ bestScore || 100 }}
+				Best: {{ bestScore }}
 			</v-col>
 			<v-col class="text-right">
 				<v-btn
@@ -45,6 +45,8 @@ export default {
 	computed: {
 		...mapState({
 			cards: state => state.cards,
+			currentTries: state => state.currentTries,
+			bestScore: state => state.bestScore,
 		}),
 		...mapGetters({
 			getCurrentDeckSize: 'getCurrentDeckSize'

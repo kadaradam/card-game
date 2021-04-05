@@ -72,7 +72,9 @@ export default new Vuex.Store({
 			},
 		],
 		cards: [],
-		flippedCards: []
+		flippedCards: [],
+		currentTries: 0,
+		bestScore: 0,
 	},
 	getters: {
 		getCurrentDeckSize(state) {
@@ -108,6 +110,12 @@ export default new Vuex.Store({
 			}
 
 			state.flippedCards.push(card);
+		},
+		SET_CURRENT_SCORE(state, scoreValue) {
+			state.currentTries = scoreValue;
+		},
+		SET_BEST_SCORE(state, scoreValue) {
+			state.bestScore = scoreValue;
 		}
 	},
 	actions: {
@@ -132,7 +140,9 @@ export default new Vuex.Store({
 
 			commit('SET_GAME_ACTIVE', true);
 			commit('RESET_FLIPPED_CARD');
+
 			commit('SET_SETTINGS', { name: 'deckSize', value: deckSize });
+			commit('SET_CURRENT_SCORE', 0);
 		},
 		setCardState({ commit }, param) {
 			commit('SET_CARD_STATE', param);
@@ -153,6 +163,8 @@ export default new Vuex.Store({
 				const isAMatchingPair = state.flippedCards.every(card => card.name === flippedCardName) || false;
 				const isAllCardFound = state.cards.every(cards => cards.isCardFound === true);
 
+				console.log(state.cards);
+
 				if (isAllCardFound) {
 					console.log("All card found");
 					commit('SET_GAME_ACTIVE', false);
@@ -168,6 +180,7 @@ export default new Vuex.Store({
 						commit('SET_CARD_STATE', { index: arrayIndex, stateName: 'flipped', value: false });
 					});
 
+					commit('SET_CURRENT_SCORE', state.currentTries + 1);
 				} else if (shouldCheckForMatch && isAMatchingPair) {
 					state.cards.forEach((card, arrayIndex) => {
 						if (card.name !== flippedCardName) {
