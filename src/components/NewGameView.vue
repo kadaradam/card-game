@@ -2,8 +2,8 @@
 	<v-container>
 		<v-row class="text-center">
 			<v-col>
-				<h1 class="display-2 font-weight-bold mb-3">
-					Splendex Memory Game
+				<h1 :class="['display-2', 'font-weight-bold', 'mb-3',  { 'green--text': isGameFinished } ]">
+					{{ isGameFinished ? `Congratulations! You finished the game with ${currentTries} tries.` : `Splendex Memory Game`}}
 				</h1>
 			
 				<v-select
@@ -19,6 +19,7 @@
 					color="red"
 					dark
 					@click="startNewGame({ deckSize })"
+					class="mt-4"
 				>
 					Start New Game
 				</v-btn>
@@ -28,7 +29,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
 	name: 'NewGameView',
@@ -39,5 +40,9 @@ export default {
 	methods: mapActions([
 		'startNewGame',
 	]),
+	computed: mapState({
+		currentTries: state => state.currentTries,
+		isGameFinished: state => state.isGameFinished,
+	}),
 };
 </script>

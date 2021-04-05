@@ -29,6 +29,7 @@ export default new Vuex.Store({
 			deckSize: 10,
 		},
 		isGameActive: false,
+		isGameFinished: false,
 		cardAssets: [
 			{
 				name: 'Angular',
@@ -101,6 +102,9 @@ export default new Vuex.Store({
 		SET_GAME_ACTIVE(state, value) {
 			state.isGameActive = value;
 		},
+		SET_GAME_FINISHED(state, value) {
+			state.isGameFinished = value;
+		},
 		SET_CARD_STATE(state, { index, stateName, value }) {
 			const cardStates = {
 				'flipped': 'isCardFlipped',
@@ -153,6 +157,7 @@ export default new Vuex.Store({
 			commit('SET_GAME_CARDS', shuffledArray);
 
 			commit('SET_GAME_ACTIVE', true);
+			commit('SET_GAME_FINISHED', false);
 			commit('RESET_FLIPPED_CARD');
 
 			commit('SET_SETTINGS', { name: 'deckSize', value: deckSize });
@@ -169,6 +174,7 @@ export default new Vuex.Store({
 			commit('SET_CURRENT_SCORE', currentTries);
 
 			commit('SET_GAME_ACTIVE', true);
+			commit('SET_GAME_FINISHED', false);
 
 			Object.keys(settings).forEach(key => commit('SET_SETTINGS', { name: key, value: settings[key] }));
 		},
@@ -176,8 +182,6 @@ export default new Vuex.Store({
 			commit('SET_CARD_STATE', param);
 		},
 		flipCard({ commit, state }, { index }) {
-			console.log(state.flippedCards.length, state.canPlayerFlip);
-
 			if (state.flippedCards.length > 2 || !state.canPlayerFlip) {
 				return;
 			}
@@ -221,6 +225,7 @@ export default new Vuex.Store({
 
 				if (isAllCardFound) {
 					commit('SET_GAME_ACTIVE', false);
+					commit('SET_GAME_FINISHED', true);
 				}
 
 				commit('SET_CAN_FLIP', true);

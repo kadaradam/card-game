@@ -5,7 +5,7 @@
 				Current tries: {{ currentTries}}
 			</v-col>
 			<v-col class="text-center">
-				Best: {{ bestScore }}
+				<!-- Best: {{ bestScore }} -->
 			</v-col>
 			<v-col class="text-right">
 				<v-btn
