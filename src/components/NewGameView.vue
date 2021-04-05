@@ -37,5 +37,5 @@ export default {
 	methods: mapActions([
 		'startNewGame',
 	]),
-}
+};
 </script>

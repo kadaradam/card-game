@@ -2,16 +2,17 @@
 	<v-container>
 		<v-row>
 			<v-col
-				v-for="card in cards"
-				:key="card.name"
+				v-for="(card, index) in cards"
+				:key="index"
 				cols="3.5"
 			>
 				<v-card
 					height="200"
 					width="200"
 					elevation="6"
+					@click="setCardState({ index, cardState: true })"
 				>
-					<v-img :src="require(`@/assets/images/cards/${card.file}`)" />
+					<v-img v-if="card.isCardFlipped" :src="require(`@/assets/images/cards/${card.file}`)" />
 				</v-card>
 			</v-col>
 		</v-row>
@@ -19,7 +20,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
 	name: 'CardListView',
@@ -27,5 +28,8 @@ export default {
 	computed: mapState({
 		cards: state => state.cards,
 	}),
-}
+	methods: mapActions([
+		'setCardState',
+	]),
+};
 </script>
