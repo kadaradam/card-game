@@ -18,7 +18,12 @@
 
 			<v-spacer></v-spacer>
 
-			<v-row align="center" justify="center" no-gutters>
+			<v-row
+				v-if="isGameActive"
+				align="center"
+				justify="center"
+				no-gutters
+			>
 				<v-col>
 					Deck size:
 				</v-col>
@@ -44,8 +49,12 @@
 		</v-app-bar>
 
 		<v-main>
-			<NewGameView/>
-			<CardListView/>
+			<template v-if="!isGameActive">
+				<NewGameView/>
+			</template>
+			<template v-else>
+				<CardListView/>
+			</template>
 		</v-main>
 	</v-app>
 </template>
@@ -53,6 +62,8 @@
 <script>
 import CardListView from './components/CardListView';
 import NewGameView from './components/NewGameView';
+
+import { mapState } from 'vuex';
 
 export default {
 	name: 'App',
@@ -62,6 +73,9 @@ export default {
 	},
 	data: () => ({
 		availableCardNums: Array(8).fill().map((element, index) => index + 3),
+	}),
+	computed: mapState({
+		isGameActive: state => state.isGameActive,
 	}),
 };
 </script>

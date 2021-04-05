@@ -17,6 +17,7 @@
 					x-large
 					color="red"
 					dark
+					@click="startNewGame"
 				>
 					Start New Game
 				</v-btn>
@@ -26,10 +27,15 @@
 </template>
 
 <script>
-	export default {
-		name: 'NewGameView',
-		data: () => ({
-			availableCardNums: Array(8).fill().map((element, index) => index + 3),
-		}),
-	}
+import { mapActions } from 'vuex';
+
+export default {
+	name: 'NewGameView',
+	data: () => ({
+		availableCardNums: Array(8).fill().map((element, index) => index + 3),
+	}),
+	methods: mapActions([
+		'startNewGame',
+	]),
+}
 </script>

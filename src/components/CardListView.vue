@@ -2,8 +2,8 @@
 	<v-container>
 		<v-row>
 			<v-col
-				v-for="n in 24"
-				:key="n"
+				v-for="card in cards"
+				:key="card.name"
 				cols="3.5"
 			>
 				<v-card
@@ -11,6 +11,7 @@
 					width="200"
 					elevation="6"
 				>
+					<v-img :src="require(`@/assets/images/cards/${card.file}`)" />
 				</v-card>
 			</v-col>
 		</v-row>
@@ -18,8 +19,13 @@
 </template>
 
 <script>
-	export default {
-		name: 'CardListView',
-		data: () => ({}),
-	}
+import { mapState } from 'vuex';
+
+export default {
+	name: 'CardListView',
+	data: () => ({}),
+	computed: mapState({
+		cards: state => state.cards,
+	}),
+}
 </script>
