@@ -1,5 +1,22 @@
 <template>
 	<v-container>
+		<v-row align="center" justify="space-around">
+			<v-col>
+				Current tries: {{ currentScore || 10 }}
+			</v-col>
+			<v-col class="text-center">
+				Best: {{ bestScore || 100 }}
+			</v-col>
+			<v-col class="text-right">
+				<v-btn
+					class="ma-2"
+					outlined
+					@click="startNewGame({ deckSize: getCurrentDeckSize })"
+				>
+					Reset Game ({{getCurrentDeckSize}})
+				</v-btn>
+			</v-col>
+		</v-row>
 		<v-row>
 			<v-col
 				v-for="(card, index) in cards"
@@ -20,16 +37,22 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
 	name: 'CardListView',
 	data: () => ({}),
-	computed: mapState({
-		cards: state => state.cards,
-	}),
+	computed: {
+		...mapState({
+			cards: state => state.cards,
+		}),
+		...mapGetters({
+			getCurrentDeckSize: 'getCurrentDeckSize'
+		})
+	},
 	methods: mapActions([
 		'flipCard',
+		'startNewGame',
 	]),
 };
 </script>

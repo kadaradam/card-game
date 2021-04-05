@@ -75,7 +75,9 @@ export default new Vuex.Store({
 		flippedCards: []
 	},
 	getters: {
-
+		getCurrentDeckSize(state) {
+			return state.settings.deckSize;
+		}
 	},
 	mutations: {
 		SET_GAME_CARDS(state, cardArray) {
@@ -92,6 +94,11 @@ export default new Vuex.Store({
 
 			Vue.set(state.cards[index], cardStates[stateName], value);
 		},
+		SET_SETTINGS(state, { name, value }) {
+			Vue.set(state.settings, name, value);
+
+			console.log(state.settings);
+		},
 		RESET_FLIPPED_CARD(state) {
 			state.flippedCards = [];
 		},
@@ -104,9 +111,10 @@ export default new Vuex.Store({
 		}
 	},
 	actions: {
-		startNewGame({ state, commit }) {
-			const copyAssets = JSON.parse(JSON.stringify(state.cardAssets));
-			const copyAssetsPack2 = JSON.parse(JSON.stringify(state.cardAssets));
+		startNewGame({ state, commit }, { deckSize }) {
+			const cardDeck = shuffle(state.cardAssets).slice(0, deckSize);
+			const copyAssets = JSON.parse(JSON.stringify(cardDeck));
+			const copyAssetsPack2 = JSON.parse(JSON.stringify(cardDeck));
 
 			// 1. Double the card size by copying the default card 
 			// 2. Shuffle the cards
@@ -124,6 +132,7 @@ export default new Vuex.Store({
 
 			commit('SET_GAME_ACTIVE', true);
 			commit('RESET_FLIPPED_CARD');
+			commit('SET_SETTINGS', { name: 'deckSize', value: deckSize });
 		},
 		setCardState({ commit }, param) {
 			commit('SET_CARD_STATE', param);
@@ -146,6 +155,7 @@ export default new Vuex.Store({
 
 				if (isAllCardFound) {
 					console.log("All card found");
+					commit('SET_GAME_ACTIVE', false);
 					return;
 				}
 

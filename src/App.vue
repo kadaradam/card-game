@@ -29,6 +29,7 @@
 				</v-col>
 				<v-col class="mx-4">
 					<v-select
+						v-model="deckSize"
 						:items="availableCardNums"
 						label="Number of cards"
 						outlined
@@ -39,6 +40,7 @@
 					<v-btn
 						x-large
 						color="red"
+						@click="startNewGame({ deckSize })"
 					>
 						Start New Game
 					</v-btn>
@@ -63,7 +65,7 @@
 import CardListView from './components/CardListView';
 import NewGameView from './components/NewGameView';
 
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
 	name: 'App',
@@ -73,9 +75,13 @@ export default {
 	},
 	data: () => ({
 		availableCardNums: Array(8).fill().map((element, index) => index + 3),
+		deckSize: 10,
 	}),
 	computed: mapState({
 		isGameActive: state => state.isGameActive,
 	}),
+	methods: mapActions([
+		'startNewGame',
+	]),
 };
 </script>

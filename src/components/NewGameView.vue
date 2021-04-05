@@ -7,6 +7,7 @@
 				</h1>
 			
 				<v-select
+					v-model="deckSize"
 					:items="availableCardNums"
 					label="Number of cards"
 					outlined
@@ -17,7 +18,7 @@
 					x-large
 					color="red"
 					dark
-					@click="startNewGame"
+					@click="startNewGame({ deckSize })"
 				>
 					Start New Game
 				</v-btn>
@@ -33,6 +34,7 @@ export default {
 	name: 'NewGameView',
 	data: () => ({
 		availableCardNums: Array(8).fill().map((element, index) => index + 3),
+		deckSize: 10,
 	}),
 	methods: mapActions([
 		'startNewGame',
