@@ -3,6 +3,26 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
+// Credit goes to: https://github.com/coolaj86/knuth-shuffle
+
+function shuffle(array) {
+	var currentIndex = array.length, temporaryValue, randomIndex;
+
+	// While there remain elements to shuffle...
+	while (0 !== currentIndex) {
+		// Pick a remaining element...
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+
+		// And swap it with the current element.
+		temporaryValue = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+	}
+
+	return array;
+}
+
 export default new Vuex.Store({
 	state: {
 		settings: {
@@ -67,12 +87,13 @@ export default new Vuex.Store({
 	actions: {
 		startNewGame({ state, commit }) {
 			const copyAssets = JSON.parse(JSON.stringify(state.cardAssets));
+			const copyAssetsPack2 = JSON.parse(JSON.stringify(state.cardAssets));
 
 			// Double the card size
-			commit("SET_GAME_CARDS", [
+			commit("SET_GAME_CARDS", shuffle([
 				...copyAssets,
-				...copyAssets,
-			]);
+				...copyAssetsPack2,
+			]));
 
 			commit("SET_GAME_ACTIVE", true);
 		}
