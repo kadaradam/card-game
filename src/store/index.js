@@ -129,36 +129,49 @@ export default new Vuex.Store({
 			commit('SET_CARD_STATE', param);
 		},
 		flipCard({ commit, state }, { index }) {
-			commit('SET_CARD_STATE', { index, stateName: 'flipped', value: true });
-
+			// Do not allow to flip multiple cards at one
 			commit('ADD_FLIPPED_CARD', state.cards[index]);
+
+			if (state.flippedCards.length > 2) {
+				return;
+			}
+
+			commit('SET_CARD_STATE', { index, stateName: 'flipped', value: true });
 			
-			const flippedCardName = state.cards[index].name;
-			const shouldCheckForMatch = state.flippedCards.length >= 2;
-			const isMatchingPair = state.flippedCards.every(card => card.name === flippedCardName) || false;
+			setTimeout(() => {
+				const flippedCardName = state.cards[index].name;
+				const shouldCheckForMatch = state.flippedCards.length >= 2;
+				const isAMatchingPair = state.flippedCards.every(card => card.name === flippedCardName) || false;
+				const isAllCardFound = state.cards.every(cards => cards.isCardFound === true);
 
-			if (shouldCheckForMatch && !isMatchingPair) {
-				state.cards.forEach((card, arrayIndex) => {
-					if (card.isCardFound) {
-						return;
-					}
+				if (isAllCardFound) {
+					console.log("All card found");
+					return;
+				}
 
-					commit('SET_CARD_STATE', { index: arrayIndex, stateName: 'flipped', value: false });
-				});
+				if (shouldCheckForMatch && !isAMatchingPair) {
+					state.cards.forEach((card, arrayIndex) => {
+						if (card.isCardFound) {
+							return;
+						}
 
-			} else if (shouldCheckForMatch && isMatchingPair) {
-				state.cards.forEach((card, arrayIndex) => {
-					if (card.name !== flippedCardName) {
-						return;
-					}
+						commit('SET_CARD_STATE', { index: arrayIndex, stateName: 'flipped', value: false });
+					});
 
-					commit('SET_CARD_STATE', { index: arrayIndex, stateName: 'found', value: true });
-				});	
-			}
+				} else if (shouldCheckForMatch && isAMatchingPair) {
+					state.cards.forEach((card, arrayIndex) => {
+						if (card.name !== flippedCardName) {
+							return;
+						}
 
-			if (shouldCheckForMatch) {
-				commit('RESET_FLIPPED_CARD');
-			}
+						commit('SET_CARD_STATE', { index: arrayIndex, stateName: 'found', value: true });
+					});	
+				}
+
+				if (shouldCheckForMatch) {
+					commit('RESET_FLIPPED_CARD');
+				}
+			}, 750);
 		}
 	},
 });
