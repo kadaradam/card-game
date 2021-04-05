@@ -21,7 +21,8 @@
 			<v-col
 				v-for="(card, index) in cards"
 				:key="index"
-				cols="3.5"
+				md="3.5"
+				xs="2"
 			>
 				<v-card
 					height="200"
