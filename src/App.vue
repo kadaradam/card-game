@@ -19,6 +19,7 @@
 			<v-spacer></v-spacer>
 
 			<v-row
+				class="hidden-sm-and-down"
 				v-if="isGameActive"
 				align="center"
 				justify="center"
