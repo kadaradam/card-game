@@ -75,6 +75,8 @@ export default new Vuex.Store({
 		flippedCards: [],
 		currentTries: 0,
 		bestScore: 0,
+
+		canPlayerFlip: true, // For flip cooldown
 	},
 	getters: {
 		getCurrentDeckSize(state) {
@@ -125,6 +127,9 @@ export default new Vuex.Store({
 		},
 		SET_BEST_SCORE(state, scoreValue) {
 			state.bestScore = scoreValue;
+		},
+		SET_CAN_FLIP(state, value) {
+			state.canPlayerFlip = value;
 		}
 	},
 	actions: {
@@ -171,26 +176,22 @@ export default new Vuex.Store({
 			commit('SET_CARD_STATE', param);
 		},
 		flipCard({ commit, state }, { index }) {
-			// Do not allow to flip multiple cards at one
-			commit('ADD_FLIPPED_CARD', state.cards[index]);
+			console.log(state.flippedCards.length, state.canPlayerFlip);
 
-			if (state.flippedCards.length > 2) {
+			if (state.flippedCards.length > 2 || !state.canPlayerFlip) {
 				return;
 			}
 
+			// Do not allow to flip multiple cards at one
+			commit('ADD_FLIPPED_CARD', state.cards[index]);
+
+			commit('SET_CAN_FLIP', false);
 			commit('SET_CARD_STATE', { index, stateName: 'flipped', value: true });
 			
 			setTimeout(() => {
 				const flippedCardName = state.cards[index].name;
 				const shouldCheckForMatch = state.flippedCards.length >= 2;
 				const isAMatchingPair = state.flippedCards.every(card => card.name === flippedCardName) || false;
-				const isAllCardFound = state.cards.every(cards => cards.isCardFound === true);
-
-				if (isAllCardFound) {
-					console.log("All card found");
-					commit('SET_GAME_ACTIVE', false);
-					return;
-				}
 
 				if (shouldCheckForMatch && !isAMatchingPair) {
 					state.cards.forEach((card, arrayIndex) => {
@@ -215,7 +216,15 @@ export default new Vuex.Store({
 				if (shouldCheckForMatch) {
 					commit('RESET_FLIPPED_CARD');
 				}
-			}, 750);
+
+				const isAllCardFound = state.cards.every(cards => cards.isCardFound === true);
+
+				if (isAllCardFound) {
+					commit('SET_GAME_ACTIVE', false);
+				}
+
+				commit('SET_CAN_FLIP', true);
+			}, 250);
 		}
 	},
 });
