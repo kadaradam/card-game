@@ -1,60 +1,67 @@
 <template>
-  <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+	<v-app>
+		<v-app-bar
+			app
+			color="primary"
+			dark
+		>
+			<div class="d-flex align-center">
+				<v-img
+					alt="Splendex Logo"
+					class="mr-2"
+					contain
+					src="@/assets/images/splendex-logo.svg"
+					transition="scale-transition"
+					width="160"
+				/>
+			</div>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+			<v-spacer></v-spacer>
 
-      <v-spacer></v-spacer>
+			<v-row align="center" justify="center" no-gutters>
+				<v-col>
+					Deck size:
+				</v-col>
+				<v-col class="mx-4">
+					<v-select
+						:items="availableCardNums"
+						label="Number of cards"
+						outlined
+						hide-details
+					></v-select>
+				</v-col>
+				<v-col>
+					<v-btn
+						x-large
+						color="red"
+					>
+						Start New Game
+					</v-btn>
+				</v-col>
+			</v-row>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
+			<v-spacer></v-spacer>
+		</v-app-bar>
 
-    <v-main>
-      <HelloWorld/>
-    </v-main>
-  </v-app>
+		<v-main>
+			<NewGameView/>
+			<CardListView/>
+		</v-main>
+	</v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import CardListView from './components/CardListView';
+import NewGameView from './components/NewGameView';
 
 export default {
-  name: 'App',
-
-  components: {
-    HelloWorld,
-  },
-
-  data: () => ({
-    //
-  }),
+	name: 'App',
+	components: {
+		CardListView,
+		NewGameView,
+	},
+	data: () => ({
+		availableCardNums: Array(8).fill().map((element, index) => index + 3),
+	}),
 };
 </script>
