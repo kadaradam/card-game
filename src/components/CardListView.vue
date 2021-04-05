@@ -10,7 +10,7 @@
 					height="200"
 					width="200"
 					elevation="6"
-					@click="setCardState({ index, cardState: true })"
+					@click="flipCard({ index })"
 				>
 					<v-img v-if="card.isCardFlipped" :src="require(`@/assets/images/cards/${card.file}`)" />
 				</v-card>
@@ -29,7 +29,7 @@ export default {
 		cards: state => state.cards,
 	}),
 	methods: mapActions([
-		'setCardState',
+		'flipCard',
 	]),
 };
 </script>
