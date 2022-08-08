@@ -60,8 +60,8 @@ export default new Vuex.Store({
 				file: 'sass.png'
 			},
 			{
-				name: 'Splendex',
-				file: 'splendex.png'
+				name: 'Vue',
+				file: 'vue.png'
 			},
 			{
 				name: 'TS',

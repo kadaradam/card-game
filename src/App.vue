@@ -7,12 +7,12 @@
 		>
 			<div class="d-flex align-center">
 				<v-img
-					alt="Splendex Logo"
+					alt="Memory Game Logo"
 					class="mr-2"
 					contain
-					src="@/assets/images/splendex-logo.svg"
+					src="@/assets/logo.svg"
 					transition="scale-transition"
-					width="160"
+					height="48"
 				/>
 			</div>
 

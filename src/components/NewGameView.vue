@@ -3,7 +3,7 @@
 		<v-row class="text-center">
 			<v-col>
 				<h1 :class="['display-2', 'font-weight-bold', 'mb-3',  { 'green--text': isGameFinished } ]">
-					{{ isGameFinished ? `Congratulations! You finished the game with ${currentTries} tries.` : `Splendex Memory Game`}}
+					{{ isGameFinished ? `Congratulations! You finished the game with ${currentTries} tries.` : `Memory Game`}}
 				</h1>
 			
 				<v-select
